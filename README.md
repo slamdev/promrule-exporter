@@ -3,7 +3,7 @@
 A simple tool that exports all PrometheusRule resources from a cluster and converts them to a set of files in
 [native rule format](https://cortexmetrics.io/docs/api/#example-response) that is readable by cortex or mimir.
 
-This tool is ment to be used as a CronJob together with [cortextool](https://github.com/grafana/cortex-tools) or
+This tool is meant to be used as a CronJob together with [cortextool](https://github.com/grafana/cortex-tools) or
 [mimirtool](https://grafana.com/docs/mimir/latest/operators-guide/tools/mimirtool/).
 
 E.g.:

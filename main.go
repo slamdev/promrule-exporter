@@ -50,7 +50,7 @@ func main() {
 			for _, group := range groups {
 				klog.Infof("processing [%s] group", group.Name)
 
-				filteredRules := filterRules(group.Rules, excludeAlertRules, excludeRecordingRules)
+				filteredRules := filterRules(group.Rules, excludeAlertRules, excludeRecordingRules, rule.Namespace, group.Name)
 				group.Rules = filteredRules
 				if len(group.Rules) == 0 {
 					klog.Infof("no rules are left in [%s] group after filtering; skipping", group.Name)
@@ -69,7 +69,7 @@ func main() {
 			for _, group := range groups {
 				klog.Infof("processing [%s] group", group.Name)
 
-				filteredRules := filterRules(group.Rules, excludeAlertRules, excludeRecordingRules)
+				filteredRules := filterRules(group.Rules, excludeAlertRules, excludeRecordingRules, rule.Namespace, group.Name)
 				group.Rules = filteredRules
 				if len(group.Rules) == 0 {
 					klog.Infof("no rules are left in [%s] group after filtering; skipping", group.Name)
@@ -104,7 +104,7 @@ func main() {
 	}
 }
 
-func filterRules(rules []monitoring.Rule, excludeAlertRules bool, excludeRecordingRules bool) []monitoring.Rule {
+func filterRules(rules []monitoring.Rule, excludeAlertRules bool, excludeRecordingRules bool, namespace string, group string) []monitoring.Rule {
 	if !excludeAlertRules && !excludeRecordingRules {
 		return rules
 	}
@@ -116,6 +116,8 @@ func filterRules(rules []monitoring.Rule, excludeAlertRules bool, excludeRecordi
 		if excludeRecordingRules && rule.Record != "" {
 			continue
 		}
+		rule.Labels["rule-namespace"] = namespace
+		rule.Labels["rule-group"] = group
 		res = append(res, rule)
 	}
 	return res

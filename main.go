@@ -116,8 +116,8 @@ func filterRules(rules []monitoring.Rule, excludeAlertRules bool, excludeRecordi
 		if excludeRecordingRules && rule.Record != "" {
 			continue
 		}
-		rule.Labels["rule-namespace"] = namespace
-		rule.Labels["rule-group"] = group
+		rule.Labels["rule_namespace"] = namespace
+		rule.Labels["rule_group"] = group
 		res = append(res, rule)
 	}
 	return res

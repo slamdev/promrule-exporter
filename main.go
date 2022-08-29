@@ -105,9 +105,6 @@ func main() {
 }
 
 func filterRules(rules []monitoring.Rule, excludeAlertRules bool, excludeRecordingRules bool, namespace string, group string) []monitoring.Rule {
-	if !excludeAlertRules && !excludeRecordingRules {
-		return rules
-	}
 	var res []monitoring.Rule
 	for _, rule := range rules {
 		if excludeAlertRules && rule.Alert != "" {
@@ -115,6 +112,9 @@ func filterRules(rules []monitoring.Rule, excludeAlertRules bool, excludeRecordi
 		}
 		if excludeRecordingRules && rule.Record != "" {
 			continue
+		}
+		if rule.Labels == nil {
+			rule.Labels = map[string]string{}
 		}
 		rule.Labels["rule_namespace"] = namespace
 		rule.Labels["rule_group"] = group
